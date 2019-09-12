@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ActorInActionNode : DecisionNode
 {
-    public Actor.Action actionToTest = (Actor.Action) (-1);
+    public Actor.ActionToTake actionToTest = (Actor.ActionToTake) (-1);
 
     protected override bool IsTrue(Actor actor)
     {

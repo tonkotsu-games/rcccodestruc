@@ -4,5 +4,5 @@
 /// 
 public interface INode
 {
-    Actor.Action Evaluate(Actor actor);
+    Actor.ActionToTake Evaluate(Actor actor);
 }

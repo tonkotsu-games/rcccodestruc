@@ -7,14 +7,14 @@ using UnityEngine;
 /// </summary>
 public class ActionNode : INode
 {
-    private Actor.Action actionToReturn =  Actor.Action.None;
+    private Actor.ActionToTake actionToReturn =  Actor.ActionToTake.None;
         
-    public ActionNode(Actor.Action actionToReturn)
+    public ActionNode(Actor.ActionToTake actionToReturn)
     {
         this.actionToReturn = actionToReturn;
     }
 
-    public Actor.Action Evaluate(Actor thinker)
+    public Actor.ActionToTake Evaluate(Actor thinker)
     {
        return actionToReturn;
     }

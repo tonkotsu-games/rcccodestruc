@@ -12,40 +12,41 @@ public class BunnyBrain : DecisionTreeBrain
     private ActorInActionNode actorInWalkToPlayerOutAggro = new ActorInActionNode();
 
     //Leaves
-    private ActionNode idleAction = new ActionNode( Actor.Action.Idle);
-    private ActionNode attackAction = new ActionNode( Actor.Action.MeleeAttack);
-    private ActionNode walkToPlayerAction = new ActionNode( Actor.Action.WalkTo);
-    private ActionNode noAction = new ActionNode( Actor.Action.None);
+    private ActionNode idleAction = new ActionNode( Actor.ActionToTake.Idle);
+    private ActionNode attackAction = new ActionNode( Actor.ActionToTake.MeleeAttack);
+    private ActionNode walkToPlayerAction = new ActionNode( Actor.ActionToTake.WalkTo);
+    private ActionNode noAction = new ActionNode( Actor.ActionToTake.None);
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
 
 #region Nodes Setup
 
         // A1
         playerInAggroRange.TrueNode = playerInMeleeRange;
         playerInAggroRange.FalseNode = actorInWalkToPlayerOutAggro;
-        playerInAggroRange.range = actor.AggroRange;
+        playerInAggroRange.range = actorType.AggroRange;
 
         // B1
         playerInMeleeRange.TrueNode = attackAction;
         playerInMeleeRange.FalseNode = actorInWalkToPlayerInAggro;
-        playerInMeleeRange.range = actor.MeleeRange;
+        playerInMeleeRange.range = actorType.MeleeRange;
 
         // B2
         actorInWalkToPlayerOutAggro.TrueNode = idleAction;
         actorInWalkToPlayerOutAggro.FalseNode = noAction;
-        actorInWalkToPlayerOutAggro.actionToTest =  Actor.Action.WalkTo;
+        actorInWalkToPlayerOutAggro.actionToTest =  Actor.ActionToTake.WalkTo;
 
         // C1
         actorInWalkToPlayerInAggro.TrueNode = noAction;
         actorInWalkToPlayerInAggro.FalseNode = walkToPlayerAction;
-        actorInWalkToPlayerInAggro.actionToTest = Actor.Action.WalkTo;
+        actorInWalkToPlayerInAggro.actionToTest = Actor.ActionToTake.WalkTo;
 #endregion
     }
 
-    public override Actor.Action Think()
+    public override Actor.ActionToTake Think(Actor actor)
     {
         var result = playerInAggroRange.Evaluate(actor);
         return result;

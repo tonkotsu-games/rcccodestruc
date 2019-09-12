@@ -11,7 +11,7 @@ public class DecisionNode : INode
     public INode TrueNode { get => trueNode; set => trueNode = value; }
     public INode FalseNode { get => falseNode; set => falseNode = value; }
 
-    public Actor.Action Evaluate(Actor actor)
+    public Actor.ActionToTake Evaluate(Actor actor)
     {
 
         if (TrueNode!=null && FalseNode!=null)

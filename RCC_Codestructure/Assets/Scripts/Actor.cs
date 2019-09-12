@@ -11,7 +11,7 @@ public class Actor : MonoBehaviour
 
     [SerializeField] private BunnyBrain bunnyBrain = null;
 
-    public Action currentAction;
+    public ActionToTake currentAction;
 
     public GameObject Player { get => player; set => player = value; }
     public float AggroRange { get => aggroRange; }
@@ -21,24 +21,24 @@ public class Actor : MonoBehaviour
     {
         if(think)
         {
-            Action result = bunnyBrain.Think();
+            ActionToTake result = bunnyBrain.Think();
 
-            if (result != Action.None)
+            if (result != ActionToTake.None)
             {
                 currentAction = result;
             }
 
             switch (result)
             {
-                case Action.MeleeAttack:
+                case ActionToTake.MeleeAttack:
                     MeleeAttack();
                     break;
 
-                case Action.Idle:
+                case ActionToTake.Idle:
                     Idle();
                     break;
 
-                case Action.WalkTo:
+                case ActionToTake.WalkTo:
                     WalkTo();
                     break;
             }
@@ -48,7 +48,7 @@ public class Actor : MonoBehaviour
 
     }
 
-    //Actions
+    //Action Implementation
     
     protected virtual void MeleeAttack()
     {
@@ -65,7 +65,7 @@ public class Actor : MonoBehaviour
         throw new System.Exception("Calling Actor base method WalkTo");
     }
 
-    public enum Action
+    public enum ActionToTake
     {
         None,
         MeleeAttack,
