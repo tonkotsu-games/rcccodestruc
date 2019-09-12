@@ -21,7 +21,7 @@ public class Actor : MonoBehaviour
     {
         if(think)
         {
-            ActionToTake result = bunnyBrain.Think();
+            ActionToTake result = bunnyBrain.Think(this);
 
             if (result != ActionToTake.None)
             {
