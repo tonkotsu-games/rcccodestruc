@@ -8,7 +8,7 @@ using UnityEngine;
 public class DecisionTreeBrain : MonoBehaviour, IActionPackageDeliverer
 {
     [SerializeField] protected Actor actorType;
-    private ActionPackage actionPackage;
+    private ActionPackage actionPackage = new ActionPackage();
 
     protected virtual void Awake()
     {
