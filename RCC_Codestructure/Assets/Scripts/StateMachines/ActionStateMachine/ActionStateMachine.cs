@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine
+public class ActionExecutioner
 {
     private IState stateCurrent;
     private IState statePrevious;
