@@ -11,11 +11,14 @@ public class Actor : MonoBehaviour
 
     [SerializeField] private BunnyBrain bunnyBrain = null;
 
+    private ActionExecutioner actionExecutioner = new ActionExecutioner();
+
     public ActionToTake currentAction;
 
     public GameObject Player { get => player; set => player = value; }
     public float AggroRange { get => aggroRange; }
     public float MeleeRange { get => meleeRange; }
+    public ActionExecutioner ActionExecutioner { get => actionExecutioner;}
 
     protected void Update()
     {
@@ -44,6 +47,10 @@ public class Actor : MonoBehaviour
             }
            
             
+        }
+        else
+        {
+            actionExecutioner.ActionExecuteTick();
         }
 
     }
