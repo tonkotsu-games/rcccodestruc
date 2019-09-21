@@ -1,21 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.UI;
 
 public class VirtuellController : MonoBehaviour
 {
     IProvider inputProvider;
     InputPackage inputPackage;
 
+    private PlayerControll player; 
+
     [SerializeField] List<Texture2D> controller;
-
-
+    
     bool debugOn = true;
 
     private void Awake()
     {
+        player = GetComponent<PlayerControll>();
         inputProvider = gameObject.GetComponent<PlayerInput>();
     }
 
@@ -25,6 +24,7 @@ public class VirtuellController : MonoBehaviour
         {
             debugOn = !debugOn;
         }
+        player.InputPackage = inputProvider.GetPackage();
     }
 
     private void OnGUI()
@@ -33,27 +33,252 @@ public class VirtuellController : MonoBehaviour
 
         if (debugOn)
         {
-            GUIStyle style = new GUIStyle(EditorStyles.textField);
-            style.normal.textColor = Color.red;
-            style.fontSize = 30;
-
             GUI.DrawTexture(new Rect(35, 100, 455, 275), controller[0]);
             GUI.DrawTexture(new Rect(115, 150, 70, 70), controller[1]);
-            GUI.DrawTexture(new Rect(130, 165, 40, 40), controller[2]);
+            if(inputPackage.MoveHorizontal >= 0.1f || 
+               inputPackage.MoveHorizontal <= -0.1f || 
+               inputPackage.MoveVertical >= 0.1f || 
+               inputPackage.MoveVertical <= -0.1f)
+            {
+                GUI.DrawTexture(new Rect(130 + (inputPackage.MoveHorizontal * 15), 165 - (inputPackage.MoveVertical * 15), 40, 40),
+                                controller[2],
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(130, 165, 40, 40), controller[2]);
+            }
             GUI.DrawTexture(new Rect(280, 215, 70, 70), controller[1]);
-            GUI.DrawTexture(new Rect(295, 230, 40, 40), controller[2]);
-            GUI.DrawTexture(new Rect(170, 210, 70, 70), controller[3]);
-            GUI.DrawTexture(new Rect(335, 170, 30, 30), controller[8]);
-            GUI.DrawTexture(new Rect(365, 195, 30, 30), controller[8]);
-            GUI.DrawTexture(new Rect(395, 170, 30, 30), controller[8]);
-            GUI.DrawTexture(new Rect(365, 140, 30, 30), controller[8]);
-            GUI.DrawTexture(new Rect(220, 175, 20, 20), controller[9]);
-            GUI.DrawTexture(new Rect(280, 175, 20, 20), controller[9]);
+            if (inputPackage.CameraHorizontal >= 0.1f ||
+                inputPackage.CameraHorizontal <= -0.1f ||
+                inputPackage.CameraVertical >= 0.1f ||
+                inputPackage.CameraVertical <= -0.1f)
+            {
+                GUI.DrawTexture(new Rect(295 + (inputPackage.CameraHorizontal * 15), 230 + (inputPackage.CameraVertical * 15), 40, 40), 
+                                controller[2],
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(295, 230, 40, 40), controller[2]);
+            }
+            if (inputPackage.CrossHorizontal >= 0.1f ||
+                inputPackage.CrossHorizontal <= -0.1f ||
+                inputPackage.CrossVertical >= 0.1f ||
+                inputPackage.CrossVertical <= -0.1f)
+            {
+                if(inputPackage.CrossHorizontal >= 0.1f)
+                {
+                    GUI.DrawTexture(new Rect(170, 210, 70, 70), 
+                                    controller[6],
+                                    ScaleMode.ScaleToFit,
+                                    true,
+                                    0,
+                                    Color.red,
+                                    0,
+                                    0);
+                }
+                if (inputPackage.CrossHorizontal <= -0.1f)
+                {
+                    GUI.DrawTexture(new Rect(170, 210, 70, 70),
+                                    controller[5],
+                                    ScaleMode.ScaleToFit,
+                                    true,
+                                    0,
+                                    Color.red,
+                                    0,
+                                    0);
+                }
+                if (inputPackage.CrossVertical >= 0.1f)
+                {
+                    GUI.DrawTexture(new Rect(170, 210, 70, 70),
+                                    controller[7],
+                                    ScaleMode.ScaleToFit,
+                                    true,
+                                    0,
+                                    Color.red,
+                                    0,
+                                    0);
+                }
+                if (inputPackage.CrossVertical <= -0.1f)
+                {
+                    GUI.DrawTexture(new Rect(170, 210, 70, 70),
+                                    controller[4],
+                                    ScaleMode.ScaleToFit,
+                                    true,
+                                    0,
+                                    Color.red,
+                                    0,
+                                    0);
+                }
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(170, 210, 70, 70), controller[3]);
+            }
+            if(inputPackage.InputX)
+            {
+                GUI.DrawTexture(new Rect(335, 170, 30, 30), 
+                                controller[8],
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(335, 170, 30, 30), controller[8]);
+            }
+            if(inputPackage.InputA)
+            {
+                GUI.DrawTexture(new Rect(365, 195, 30, 30),
+                                controller[8],
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(365, 195, 30, 30), controller[8]);
+            }
+            if(inputPackage.InputB)
+            {
+                GUI.DrawTexture(new Rect(395, 170, 30, 30), 
+                                controller[8], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(395, 170, 30, 30), controller[8]);
+            }
+            if(inputPackage.InputY)
+            {
+                GUI.DrawTexture(new Rect(365, 140, 30, 30), 
+                                controller[8], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(365, 140, 30, 30), controller[8]);
+            }
+            if(inputPackage.SelectButton)
+            {
+                GUI.DrawTexture(new Rect(220, 175, 20, 20), 
+                                controller[9], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(220, 175, 20, 20), controller[9]);
+            }
+            if (inputPackage.StartButton)
+            {
+                GUI.DrawTexture(new Rect(280, 175, 20, 20), 
+                                controller[9], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(280, 175, 20, 20), controller[9]);
+            }
+
             GUI.DrawTexture(new Rect(245, 120, 30, 30), controller[10]);
-            GUI.DrawTexture(new Rect(110, 65, 75, 40), controller[11]);
-            GUI.DrawTexture(new Rect(335, 65, 75, 40), controller[12]);
-            GUI.DrawTexture(new Rect(130, 10, 50, 65), controller[13]);
-            GUI.DrawTexture(new Rect(340, 10, 50, 65), controller[14]);
+
+            if (inputPackage.BumberLeft)
+            {
+                GUI.DrawTexture(new Rect(110, 65, 75, 40),
+                                controller[11],
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(110, 65, 75, 40), controller[11]);
+            }
+            if (inputPackage.BumberRight)
+            {
+                GUI.DrawTexture(new Rect(335, 65, 75, 40), 
+                                controller[12], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(335, 65, 75, 40), controller[12]);
+            }
+            if(inputPackage.TriggerLeft >= 0.4f)
+            {
+                GUI.DrawTexture(new Rect(130, 10, 50, 65), 
+                                controller[13], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(130, 10, 50, 65), controller[13]);
+            }
+            if (inputPackage.TriggerRight >= 0.4f)
+            {
+                GUI.DrawTexture(new Rect(340, 10, 50, 65), 
+                                controller[14], 
+                                ScaleMode.ScaleToFit,
+                                true,
+                                0,
+                                Color.red,
+                                0,
+                                0);
+            }
+            else
+            {
+                GUI.DrawTexture(new Rect(340, 10, 50, 65), controller[14]);
+            }
 
             //GUILayout.Label("Horizontal Movement: " + inputPackage.MoveHorizontal.ToString(), style);
             //GUILayout.Label("Vertical Movement: " + inputPackage.MoveVertical.ToString(), style);
